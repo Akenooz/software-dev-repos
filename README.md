@@ -11,6 +11,6 @@ Software repository under Mr. Nitin Bhide sir.
 - DIVEEN SINGH RATAUL   (21BCS3828)
 - SYED MEHDI ABBAS      (21CBS1016)
 - SUMIT                 (21BCS6738)
-- RAMA                  (21BCS6413)
+- RANIA                  (21BCS6413)
 - ROHIT                 (21BCS4860)
 
