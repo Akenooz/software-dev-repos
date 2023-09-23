@@ -60,7 +60,15 @@ class _MyAppState extends State<MyApp> {
       themeMode: _themeMode,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("📆 Day Planner"),
+          title: Text("📆 Month Name Here"), // Replace with your month name
+          actions: [
+            IconButton(
+              icon: Icon(Icons.account_circle), // Account icon
+              onPressed: () {
+                // Handle account button press
+              },
+            ),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -120,7 +128,7 @@ class _MyAppState extends State<MyApp> {
                 },
               ),
               ListTile(
-                title: Text("Dark Theme"),
+                title: Text("Toggle Theme"),
                 leading: Icon(Icons.brightness_4), // Moon icon for theme toggle
                 onTap: _toggleTheme, // Toggle theme function
               ),
