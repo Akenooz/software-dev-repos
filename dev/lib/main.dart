@@ -10,6 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // Theme data for light and dark themes
   final ThemeData lightTheme = ThemeData.light().copyWith(
     primaryColor: Color.fromARGB(255, 52, 255, 93),
     platform: TargetPlatform.android,
@@ -63,9 +64,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text("📆 Day Planner"),
           actions: [
             IconButton(
-              onPressed: () {
-                _toggleTheme();
-              },
+              onPressed: _toggleTheme,
               icon: Icon(
                 _themeMode == ThemeMode.light
                     ? Icons.nightlight_round
@@ -76,7 +75,7 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Drawer(
           child: ListView(
-            children: const [
+            children: [
               DrawerHeader(
                 child: Center(
                   child: Text(
@@ -85,10 +84,55 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
+              ListTile(
+                title: Text("Day View"),
+                onTap: () {
+                  // Handle day view
+                },
+              ),
+              ListTile(
+                title: Text("3-Day View"),
+                onTap: () {
+                  // Handle 3-day view
+                },
+              ),
+              ListTile(
+                title: Text("Week View"),
+                onTap: () {
+                  // Handle week view
+                },
+              ),
+              ListTile(
+                title: Text("Month View"),
+                onTap: () {
+                  // Handle month view
+                },
+              ),
+              Divider(), // Divider for separation
+              ListTile(
+                title: Text("Holidays"),
+                leading: Icon(Icons.calendar_today),
+                onTap: () {
+                  // Handle holidays
+                },
+              ),
+              ListTile(
+                title: Text("Events"),
+                leading: Icon(Icons.event),
+                onTap: () {
+                  // Handle events
+                },
+              ),
+              ListTile(
+                title: Text("Tasks"),
+                leading: Icon(Icons.task),
+                onTap: () {
+                  // Handle tasks
+                },
+              ),
             ],
           ),
         ),
-        // Removed the persistentFooterButtons
       ),
     );
   }
