@@ -28,13 +28,13 @@ class _MyAppState extends State<MyApp> {
     hashCode: getHashCode,
   );
 
-  // Your theme code here
+  // Define light and dark themes
   final ThemeData lightTheme = ThemeData.light().copyWith(
-    // Theme configuration
+    // Configure the light theme here
   );
 
   final ThemeData darkTheme = ThemeData.dark().copyWith(
-    // Theme configuration
+    // Configure the dark theme here
   );
 
   ThemeMode _themeMode = ThemeMode.light;
@@ -52,6 +52,7 @@ class _MyAppState extends State<MyApp> {
     _generateEvents();
   }
 
+  // Generate example events
   void _generateEvents() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -229,6 +230,7 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+// A function to generate a unique hash code for a DateTime
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
