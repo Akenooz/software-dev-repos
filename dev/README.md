@@ -1,6 +1,6 @@
 # Your App Name
 
-![App Screenshot](screenshot.png)
+![App Screenshot](images/img1.png)
 
 A Flutter application for managing your daily schedule and events.
 
@@ -12,9 +12,9 @@ A Flutter application for managing your daily schedule and events.
 
 ## Screenshots
 
-![Screenshot 1](screenshots/screenshot1.png)
-![Screenshot 2](screenshots/screenshot2.png)
-![Screenshot 3](screenshots/screenshot3.png)
+![Screenshot 1](images/img2.png)
+![Screenshot 2](images/img3.png)
+![Screenshot 3](images/img4.png)
 
 ## Getting Started
 
