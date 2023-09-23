@@ -1,4 +1,4 @@
-# Your App Name
+# Team 7
 
 ![App Screenshot](images/img1.png)
 
