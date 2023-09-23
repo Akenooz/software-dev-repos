@@ -88,44 +88,7 @@ class _MyAppState extends State<MyApp> {
             ],
           ),
         ),
-        // Removed the bottomNavigationBar
-        // bottomNavigationBar: BottomNavigationBar(
-        //   items: <BottomNavigationBarItem>[
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.home),
-        //       label: 'Home',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.business),
-        //       label: 'Business',
-        //     ),
-        //     BottomNavigationBarItem(
-        //       icon: Icon(Icons.school),
-        //       label: 'School',
-        //     ),
-        //   ],
-        //   onTap: (index) {
-        //     // Handle bottom navigation bar item taps here
-        //   },
-        // ),
-        persistentFooterButtons: [
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _themeMode = ThemeMode.light;
-              });
-            },
-            child: Text('Light theme'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                _themeMode = ThemeMode.dark;
-              });
-            },
-            child: Text('Dark theme'),
-          ),
-        ],
+        // Removed the persistentFooterButtons
       ),
     );
   }
