@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
   );
 
   final ThemeData darkTheme = ThemeData.dark().copyWith(
-    primaryColor: Color.fromARGB(255, 52, 255, 93),
+    primaryColor: Color.fromARGB(255, 255, 0, 0),
     platform: TargetPlatform.android,
     brightness: Brightness.dark,
     useMaterial3: true,
@@ -36,10 +36,10 @@ class _MyAppState extends State<MyApp> {
       bodyLarge: TextStyle(fontSize: 18, color: Colors.white),
     ),
     appBarTheme: const AppBarTheme(
-      color: Colors.blueGrey,
+      color: Colors.blue,
       iconTheme: IconThemeData(color: Colors.white),
     ),
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueGrey),
+    colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 255, 255)),
   );
 
   ThemeMode _themeMode = ThemeMode.light;
@@ -71,69 +71,84 @@ class _MyAppState extends State<MyApp> {
           ],
         ),
         drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Center(
-                  child: Text(
-                    "Day Planner 🗓️",
-                    style: TextStyle(fontSize: 32),
+          child: Container(
+            color: darkTheme.appBarTheme.color, // Set drawer background color
+            child: ListView(
+              children: [
+                DrawerHeader(
+                  child: Center(
+                    child: Text(
+                      "Day Planner 🗓️",
+                      style: TextStyle(fontSize: 32),
+                    ),
                   ),
                 ),
-              ),
-              ListTile(
-                title: Text("Day View"),
-                onTap: () {
-                  // Handle day view
-                },
-              ),
-              ListTile(
-                title: Text("3-Day View"),
-                onTap: () {
-                  // Handle 3-day view
-                },
-              ),
-              ListTile(
-                title: Text("Week View"),
-                onTap: () {
-                  // Handle week view
-                },
-              ),
-              ListTile(
-                title: Text("Month View"),
-                onTap: () {
-                  // Handle month view
-                },
-              ),
-              Divider(), // Divider for separation
-              ListTile(
-                title: Text("Holidays"),
-                leading: Icon(Icons.calendar_today),
-                onTap: () {
-                  // Handle holidays
-                },
-              ),
-              ListTile(
-                title: Text("Events"),
-                leading: Icon(Icons.event),
-                onTap: () {
-                  // Handle events
-                },
-              ),
-              ListTile(
-                title: Text("Tasks"),
-                leading: Icon(Icons.task),
-                onTap: () {
-                  // Handle tasks
-                },
-              ),
-              ListTile(
-                title: Text("Toggle Theme"),
-                leading: Icon(Icons.brightness_4), // Moon icon for theme toggle
-                onTap: _toggleTheme, // Toggle theme function
-              ),
-            ],
+                ListTile(
+                  title: Text("Day View"),
+                  onTap: () {
+                    // Handle day view
+                  },
+                ),
+                ListTile(
+                  title: Text("3-Day View"),
+                  onTap: () {
+                    // Handle 3-day view
+                  },
+                ),
+                ListTile(
+                  title: Text("Week View"),
+                  onTap: () {
+                    // Handle week view
+                  },
+                ),
+                ListTile(
+                  title: Text("Month View"),
+                  onTap: () {
+                    // Handle month view
+                  },
+                ),
+                Divider(),
+                ListTile(
+                  title: Text("Holidays"),
+                  leading: Checkbox(
+                    value: false, // Replace with the holiday checkbox value
+                    onChanged: (value) {
+                      // Handle holiday checkbox
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text("Events"),
+                  leading: Checkbox(
+                    value: false, // Replace with the events checkbox value
+                    onChanged: (value) {
+                      // Handle events checkbox
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text("Tasks"),
+                  leading: Checkbox(
+                    value: false, // Replace with the tasks checkbox value
+                    onChanged: (value) {
+                      // Handle tasks checkbox
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: Text("Toggle Theme"),
+                  leading: Icon(Icons.brightness_4), // Moon icon for theme toggle
+                  onTap: _toggleTheme, // Toggle theme function
+                ),
+              ],
+            ),
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Handle adding tasks
+          },
+          child: Icon(Icons.add),
         ),
       ),
     );
