@@ -12,9 +12,9 @@ A Flutter application for managing your daily schedule and events.
 
 ## Screenshots
 
-![Screenshot 1](images/img2.png)
-![Screenshot 2](images/img3.png)
-![Screenshot 3](images/img4.png)
+<img src="images/img2.png" alt="Screenshot 1" width="200">
+<img src="images/img3.png" alt="Screenshot 2" width="200">
+<img src="images/img4.png" alt="Screenshot 3" width="200">
 
 ## Getting Started
 
