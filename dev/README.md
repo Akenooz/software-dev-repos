@@ -1,16 +1,32 @@
-# dev
+# Your App Name
 
-A new Flutter project.
+![App Screenshot](screenshot.png)
+
+A Flutter application for managing your daily schedule and events.
+
+## Features
+
+- **Calendar View:** View your schedule by day, week, or month.
+- **Event Management:** Add, edit, and delete events for your schedule.
+- **Theme Toggle:** Switch between light and dark themes for comfortable usage.
+
+## Screenshots
+
+![Screenshot 1](screenshots/screenshot1.png)
+![Screenshot 2](screenshots/screenshot2.png)
+![Screenshot 3](screenshots/screenshot3.png)
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-A few resources to get you started if this is your first Flutter project:
+### Prerequisites
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- [Flutter](https://flutter.dev/) installed on your system.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+### Installation
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/yourusername/your-app.git
