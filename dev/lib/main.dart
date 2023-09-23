@@ -10,7 +10,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // Theme data for light and dark themes
   final ThemeData lightTheme = ThemeData.light().copyWith(
     primaryColor: Color.fromARGB(255, 52, 255, 93),
     platform: TargetPlatform.android,
@@ -62,16 +61,6 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("📆 Day Planner"),
-          actions: [
-            IconButton(
-              onPressed: _toggleTheme,
-              icon: Icon(
-                _themeMode == ThemeMode.light
-                    ? Icons.nightlight_round
-                    : Icons.wb_sunny,
-              ),
-            ),
-          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -129,6 +118,11 @@ class _MyAppState extends State<MyApp> {
                 onTap: () {
                   // Handle tasks
                 },
+              ),
+              ListTile(
+                title: Text("Dark Theme"),
+                leading: Icon(Icons.brightness_4), // Moon icon for theme toggle
+                onTap: _toggleTheme, // Toggle theme function
               ),
             ],
           ),
