@@ -61,6 +61,18 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text("📆 Day Planner"),
+          actions: [
+            IconButton(
+              onPressed: () {
+                _toggleTheme();
+              },
+              icon: Icon(
+                _themeMode == ThemeMode.light
+                    ? Icons.nightlight_round
+                    : Icons.wb_sunny,
+              ),
+            ),
+          ],
         ),
         drawer: Drawer(
           child: ListView(
@@ -77,7 +89,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
+          items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
@@ -90,15 +102,10 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.school),
               label: 'School',
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                _themeMode == ThemeMode.light
-                    ? Icons.nightlight_round
-                    : Icons.wb_sunny,
-              ),
-              label: 'Theme',
-            ),
           ],
+          onTap: (index) {
+            // Handle bottom navigation bar item taps here
+          },
         ),
         persistentFooterButtons: [
           ElevatedButton(
