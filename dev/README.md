@@ -1,6 +1,6 @@
 # Team 7
 
-<img src="images/img2.png" alt="Screenshot 1" width="300"> <img src="images/img3.png" alt="Screenshot 2" width="300"> <img src="images/img4.png" alt="Screenshot 3" width="300">
+<img src="images/img3.png" alt="Screenshot 1" width="300"> <img src="images/img2.png" alt="Screenshot 2" width="300"> <img src="images/img4.png" alt="Screenshot 3" width="300">
 
 A Flutter application for managing your daily schedule and events.
 
