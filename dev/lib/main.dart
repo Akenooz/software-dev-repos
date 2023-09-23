@@ -90,13 +90,15 @@ class _MyAppState extends State<MyApp> {
               icon: Icon(Icons.school),
               label: 'School',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                _themeMode == ThemeMode.light
+                    ? Icons.nightlight_round
+                    : Icons.wb_sunny,
+              ),
+              label: 'Theme',
+            ),
           ],
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: _toggleTheme,
-          child: Icon(_themeMode == ThemeMode.light
-              ? Icons.nightlight_round
-              : Icons.wb_sunny),
         ),
         persistentFooterButtons: [
           ElevatedButton(
