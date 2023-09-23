@@ -7,18 +7,6 @@ void main() {
   runApp(DayPlanner());
 }
 
-class DayPlannerPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    // This painter is empty, so it won't draw anything.
-  }
-
-  @override
-  bool shouldRepaint(DayPlannerPainter oldDelegate) {
-    return false; // No need to repaint
-  }
-}
-
 class DayPlanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -45,23 +33,6 @@ class DayPlanner extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-        ),
-        body: Container(
-          constraints: const BoxConstraints.expand(),
-          decoration: BoxDecoration(
-            border: Border.all(
-              color: Colors.transparent,
-            ),
-          ),
-          child: Center(
-            child: SizedBox(
-              width: 400,
-              height: 400,
-              child: CustomPaint(
-                painter: DayPlannerPainter(),
-              ),
-            ),
           ),
         ),
       ),
