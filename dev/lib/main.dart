@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:intl/intl.dart';
+import 'dart:collection';
 
 void main() {
   runApp(MyApp());
+}
+
+class Event {
+  final String title;
+  final DateTime date;
+
+  Event(this.title, this.date);
 }
 
 class MyApp extends StatefulWidget {
@@ -10,36 +20,21 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  DateTime _selectedDay = DateTime.now();
+  DateTime _focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  );
+
+  // Your theme code here
   final ThemeData lightTheme = ThemeData.light().copyWith(
-    primaryColor: Color.fromARGB(255, 52, 255, 93),
-    platform: TargetPlatform.android,
-    brightness: Brightness.light,
-    useMaterial3: true,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-      bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue, // Use backgroundColor instead of color
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
-    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+    // Theme configuration
   );
 
   final ThemeData darkTheme = ThemeData.dark().copyWith(
-    primaryColor: Color.fromARGB(255, 255, 0, 0),
-    platform: TargetPlatform.android,
-    brightness: Brightness.dark,
-    useMaterial3: true,
-    textTheme: const TextTheme(
-      displayLarge: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-      bodyLarge: TextStyle(fontSize: 18, color: Colors.white),
-    ),
-    appBarTheme: const AppBarTheme(
-      backgroundColor: Colors.blue, // Use backgroundColor instead of color
-      iconTheme: IconThemeData(color: Colors.white),
-    ),
-    colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 255, 255)),
+    // Theme configuration
   );
 
   ThemeMode _themeMode = ThemeMode.light;
@@ -49,6 +44,37 @@ class _MyAppState extends State<MyApp> {
       _themeMode =
       _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _generateEvents();
+  }
+
+  void _generateEvents() {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final oneDay = Duration(days: 1);
+
+    events = LinkedHashMap(
+      equals: isSameDay,
+      hashCode: getHashCode,
+    );
+
+    for (int i = 0; i < 5; i++) {
+      final day = today.add(Duration(days: i));
+      final eventsForDay = <Event>[
+        Event('Event 1', day.add(Duration(hours: 9))),
+        Event('Event 2', day.add(Duration(hours: 14))),
+      ];
+
+      events[day] = eventsForDay;
+    }
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
   }
 
   @override
@@ -73,6 +99,7 @@ class _MyAppState extends State<MyApp> {
         drawer: Drawer(
           child: Container(
             color: darkTheme.appBarTheme.backgroundColor, // Use backgroundColor instead of color
+            height: MediaQuery.of(context).size.height * 0.8, // Adjust the height here
             child: ListView(
               children: [
                 DrawerHeader(
@@ -150,7 +177,58 @@ class _MyAppState extends State<MyApp> {
           },
           child: Icon(Icons.add),
         ),
+        body: Column(
+          children: [
+            TableCalendar(
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay ?? selectedDay;
+                });
+              },
+              eventLoader: (day) {
+                return _getEventsForDay(day);
+              },
+              rowHeight: 30, // Adjust the row height to decrease both vertical and horizontal space
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekdayStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.black,
+                ),
+                weekendStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _getEventsForDay(_selectedDay).length,
+                itemBuilder: (context, index) {
+                  final event = _getEventsForDay(_selectedDay)[index];
+                  return ListTile(
+                    title: Text(event.title),
+                    subtitle: Text(DateFormat('hh:mm a').format(event.date)),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+}
+
+int getHashCode(DateTime key) {
+  return key.day * 1000000 + key.month * 10000 + key.year;
 }
