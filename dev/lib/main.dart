@@ -20,7 +20,7 @@ class _MyAppState extends State<MyApp> {
       bodyLarge: TextStyle(fontSize: 18, color: Colors.black87),
     ),
     appBarTheme: const AppBarTheme(
-      color: Colors.blue,
+      backgroundColor: Colors.blue, // Use backgroundColor instead of color
       iconTheme: IconThemeData(color: Colors.white),
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
@@ -36,7 +36,7 @@ class _MyAppState extends State<MyApp> {
       bodyLarge: TextStyle(fontSize: 18, color: Colors.white),
     ),
     appBarTheme: const AppBarTheme(
-      color: Colors.blue,
+      backgroundColor: Colors.blue, // Use backgroundColor instead of color
       iconTheme: IconThemeData(color: Colors.white),
     ),
     colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 255, 255, 255)),
@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Drawer(
           child: Container(
-            color: darkTheme.appBarTheme.color, // Set drawer background color
+            color: darkTheme.appBarTheme.backgroundColor, // Use backgroundColor instead of color
             child: ListView(
               children: [
                 DrawerHeader(
