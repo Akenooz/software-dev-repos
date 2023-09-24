@@ -13,7 +13,7 @@ class Task {
     return Task(
       name: json['name'] ?? '',
       deadline:
-          json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
+      json['deadline'] != null ? DateTime.parse(json['deadline']) : null,
     );
   }
 
