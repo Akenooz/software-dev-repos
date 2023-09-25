@@ -87,7 +87,7 @@ class _MyAppState extends State<MyApp> {
       themeMode: _themeMode,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("📆 Month Name Here"), // Replace with your month name
+          title: Text("🗓️ Day Planner"), // Replace with your app's title
           actions: [
             IconButton(
               icon: Icon(Icons.account_circle), // Account icon
@@ -99,8 +99,8 @@ class _MyAppState extends State<MyApp> {
         ),
         drawer: Drawer(
           child: Container(
-            color: darkTheme.appBarTheme.backgroundColor, // Use backgroundColor instead of color
-            height: MediaQuery.of(context).size.height * 0.8, // Adjust the height here
+            color: darkTheme.appBarTheme.backgroundColor,
+            height: MediaQuery.of(context).size.height * 0.8,
             child: ListView(
               children: [
                 DrawerHeader(
@@ -165,62 +165,73 @@ class _MyAppState extends State<MyApp> {
                 ),
                 ListTile(
                   title: Text("Toggle Theme"),
-                  leading: Icon(Icons.brightness_4), // Moon icon for theme toggle
-                  onTap: _toggleTheme, // Toggle theme function
+                  leading: Icon(Icons.brightness_4),
+                  onTap: _toggleTheme,
                 ),
               ],
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Handle adding tasks
-          },
-          child: Icon(Icons.add),
-        ),
-        body: Column(
+        body: Stack(
           children: [
-            TableCalendar(
-              firstDay: DateTime.utc(2010, 10, 16),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: _focusedDay,
-              calendarFormat: _calendarFormat,
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                  _focusedDay = focusedDay ?? selectedDay;
-                });
-              },
-              eventLoader: (day) {
-                return _getEventsForDay(day);
-              },
-              rowHeight: 30, // Adjust the row height to decrease both vertical and horizontal space
-              daysOfWeekStyle: DaysOfWeekStyle(
-                weekdayStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black,
+            Column(
+              children: [
+                TableCalendar(
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  focusedDay: _focusedDay,
+                  calendarFormat: _calendarFormat,
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay ?? selectedDay;
+                    });
+                  },
+                  eventLoader: (day) {
+                    return _getEventsForDay(day);
+                  },
+                  rowHeight: 30,
+                  daysOfWeekStyle: DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.black,
+                    ),
+                    weekendStyle: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
-                weekendStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.red,
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: _getEventsForDay(_selectedDay).length,
+                    itemBuilder: (context, index) {
+                      final event = _getEventsForDay(_selectedDay)[index];
+                      return ListTile(
+                        title: Text(event.title),
+                        subtitle: Text(DateFormat('hh:mm a').format(event.date)),
+                      );
+                    },
+                  ),
                 ),
-              ),
+              ],
             ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _getEventsForDay(_selectedDay).length,
-                itemBuilder: (context, index) {
-                  final event = _getEventsForDay(_selectedDay)[index];
-                  return ListTile(
-                    title: Text(event.title),
-                    subtitle: Text(DateFormat('hh:mm a').format(event.date)),
+            Positioned(
+              bottom: 16.0,
+              right: 16.0,
+              child: FloatingActionButton(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => TaskAddingPage()),
                   );
                 },
+                child: Icon(Icons.add),
+
               ),
             ),
           ],
@@ -230,6 +241,155 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+class TaskAddingPage extends StatefulWidget {
+  @override
+  _TaskAddingPageState createState() => _TaskAddingPageState();
+}
+
+class _TaskAddingPageState extends State<TaskAddingPage> {
+  String title = '';
+  DateTime? selectedDate;
+  TimeOfDay? selectedStartTime;
+  TimeOfDay? selectedEndTime;
+  String location = '';
+  String text = '';
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
+
+  Future<void> _selectStartTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedStartTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != selectedStartTime) {
+      setState(() {
+        selectedStartTime = picked;
+      });
+    }
+  }
+
+  Future<void> _selectEndTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: selectedEndTime ?? TimeOfDay.now(),
+    );
+    if (picked != null && picked != selectedEndTime) {
+      setState(() {
+        selectedEndTime = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Add Task'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  title = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Title',
+              ),
+            ),
+            Row(
+              children: [
+                Text('Date: ${selectedDate?.toLocal()}'.split(' ')[0]),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text('Select Date'),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('Start Time: ${selectedStartTime?.format(context) ?? ''}'),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () => _selectStartTime(context),
+                  child: Text('Select'),
+                ),
+              ],
+            ),
+            Row(
+              children: [
+                Text('End Time: ${selectedEndTime?.format(context) ?? ''}'),
+                SizedBox(width: 20),
+                ElevatedButton(
+                  onPressed: () => _selectEndTime(context),
+                  child: Text('Select'),
+                ),
+              ],
+            ),
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  location = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Location',
+              ),
+            ),
+            TextField(
+              onChanged: (value) {
+                setState(() {
+                  text = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Text',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              onPressed: () {
+                // Add the task to your task list or database
+                // You can use the title, selectedDate, selectedStartTime, selectedEndTime, location, and text variables
+                // to access the entered values and save them.
+                // For example, you can call a function like addTask(title, selectedDate, selectedStartTime, selectedEndTime, location, text)
+              },
+              child: Text('Add Task'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+void addTask(
+    String title,
+    DateTime? selectedDate,
+    TimeOfDay? selectedStartTime,
+    TimeOfDay? selectedEndTime,
+    String location,
+    String text,
+    ) {
+  // Implement your task addition logic here
+}
 // A function to generate a unique hash code for a DateTime
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
