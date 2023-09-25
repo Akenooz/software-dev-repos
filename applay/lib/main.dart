@@ -4,11 +4,34 @@ void main() {
   runApp(MyApp());
 }
 
+class Task {
+  final String title;
+  final DateTime selectedDate;
+  final TimeOfDay selectedStartTime;
+  final TimeOfDay selectedEndTime;
+  final String location;
+  final String text;
+
+  Task({
+    required this.title,
+    required this.selectedDate,
+    required this.selectedStartTime,
+    required this.selectedEndTime,
+    required this.location,
+    required this.text,
+  });
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: TaskListPage(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => TaskListPage(),
+        '/add_task': (context) => TaskAddingPage(),
+      },
     );
   }
 }
@@ -28,10 +51,7 @@ class TaskListPage extends StatelessWidget {
             SizedBox(height: 20),
             FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TaskAddingPage()),
-                );
+                Navigator.pushNamed(context, '/add_task');
               },
               child: Icon(Icons.add),
             ),
@@ -48,12 +68,12 @@ class TaskAddingPage extends StatefulWidget {
 }
 
 class _TaskAddingPageState extends State<TaskAddingPage> {
-  String title = '';
+  String? title; // Declare title as an instance variable
   DateTime? selectedDate;
   TimeOfDay? selectedStartTime;
   TimeOfDay? selectedEndTime;
-  String location = '';
-  String text = '';
+  String? location; // Declare location as an instance variable
+  String? text; // Declare text as an instance variable
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -99,95 +119,86 @@ class _TaskAddingPageState extends State<TaskAddingPage> {
       appBar: AppBar(
         title: Text('Add Task'),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  title = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Title',
-              ),
-            ),
-            Row(
-              children: [
-                Text('Date: ${selectedDate?.toLocal()}'.split(' ')[0]),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    title = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Title',
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                Text('Start Time: ${selectedStartTime?.format(context) ?? ''}'),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectStartTime(context),
-                  child: Text('Select'),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text('End Time: ${selectedEndTime?.format(context) ?? ''}'),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectEndTime(context),
-                  child: Text('Select'),
-                ),
-              ],
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  location = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Location',
               ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  text = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Text',
+              Row(
+                children: [
+                  Text('Date: ${selectedDate?.toLocal()}'.split(' ')[0]),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => _selectDate(context),
+                    child: Text('Select Date'),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Add the task to your task list or database
-                // You can use the title, selectedDate, selectedStartTime, selectedEndTime, location, and text variables
-                // to access the entered values and save them.
-                // For example, you can call a function like addTask(title, selectedDate, selectedStartTime, selectedEndTime, location, text)
-              },
-              child: Text('Add Task'),
-            ),
-          ],
+              Row(
+                children: [
+                  Text('Start Time: ${selectedStartTime?.format(context) ?? ''}'),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => _selectStartTime(context),
+                    child: Text('Select'),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text('End Time: ${selectedEndTime?.format(context) ?? ''}'),
+                  SizedBox(width: 20),
+                  ElevatedButton(
+                    onPressed: () => _selectEndTime(context),
+                    child: Text('Select'),
+                  ),
+                ],
+              ),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    location = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Location',
+                ),
+              ),
+              TextField(
+                onChanged: (value) {
+                  setState(() {
+                    text = value;
+                  });
+                },
+                decoration: InputDecoration(
+                  labelText: 'Text',
+                ),
+              ),
+              SizedBox(height: 16.0),
+              ElevatedButton(
+                onPressed: () {
+                  // Add the task to your task list or database
+                  // You can use the title, selectedDate, selectedStartTime, selectedEndTime, location, and text variables
+                  // to access the entered values and save them.
+                  // For example, you can call a function like addTask(title, selectedDate, selectedStartTime, selectedEndTime, location, text)
+                },
+                child: Text('Add Task'),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
-}
-
-void addTask(
-    String title,
-    DateTime? selectedDate,
-    TimeOfDay? selectedStartTime,
-    TimeOfDay? selectedEndTime,
-    String location,
-    String text,
-    ) {
-  // Implement your task addition logic here
 }
