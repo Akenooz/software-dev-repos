@@ -1,16 +1,17 @@
+# Software Development Repository
+
+Welcome to the Software Development Repository under the guidance of Mr. Nitin Bhide.
+
 ## License
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License. For more details, please refer to the [LICENSE.md](LICENSE.md) file.
 
-# software-dev-repos
-Software repository under Mr. Nitin Bhide sir.
+## Team 7 Contributors
 
+- **Vatsal Kr. Sharma** (21BCS11884)
+- **Diveen Singh Rataul** (21BCS3828)
+- **Syed Mehdi Abbas** (21CBS1016)
+- **Sumit** (21BCS6738)
+- **Rania** (21BCS6413)
+- **Rohit** (21BCS4860)
 
-## Contributors of Team 7
-
-- VATSAL KR. SHARMA	(21BCS11884)
-- DIVEEN SINGH RATAUL   (21BCS3828)
-- SYED MEHDI ABBAS      (21CBS1016)
-- SUMIT                 (21BCS6738)
-- RANIA                  (21BCS6413)
-- ROHIT                 (21BCS4860)
-
+We are a collaborative team working on various software development projects. Feel free to explore our work and contributions.
