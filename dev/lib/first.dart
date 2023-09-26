@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
-import 'second_page.dart';
 import 'dart:collection';
+
+import 'second_page.dart'; // Import TaskAddingPage
+
 
 void main() {
   runApp(MyApp());
-}
-
-// Define a class to represent calendar events
-class Event {
-  final String title;
-  final DateTime date;
-
-  Event(this.title, this.date);
 }
 
 class MyApp extends StatefulWidget {
@@ -22,35 +16,58 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // Calendar-related variables
-  DateTime _selectedDay = DateTime.now();
-  DateTime _focusedDay = DateTime.now();
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+  ThemeMode _themeMode = ThemeMode.light;
 
-  // Store events in a LinkedHashMap
-  LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
-    equals: isSameDay,
-    hashCode: getHashCode,
-  );
-
-  // Themes for the app
   final ThemeData lightTheme = ThemeData.light().copyWith(
-    // Configure the light theme here
+    primaryColor: Colors.blue, // Change to your desired primary color
   );
 
   final ThemeData darkTheme = ThemeData.dark().copyWith(
-    // Configure the dark theme here
+    primaryColor: Colors.deepPurple, // Change to your desired primary color for dark theme
   );
 
-  // Manage the app's theme mode
-  ThemeMode _themeMode = ThemeMode.light;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      themeMode: _themeMode,
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      home: FirstPage(
+        toggleTheme: _toggleTheme, // Pass the toggleTheme function
+      ),
+    );
+  }
 
-  // Function to toggle between light and dark themes
   void _toggleTheme() {
     setState(() {
       _themeMode =
       _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     });
+  }
+}
+
+class FirstPage extends StatefulWidget {
+  final VoidCallback toggleTheme; // Callback to toggle theme
+
+  FirstPage({required this.toggleTheme});
+
+  @override
+  _FirstPageState createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  DateTime _focusedDay = DateTime.now();
+  CalendarFormat _calendarFormat = CalendarFormat.month;
+  DateTime _selectedDay = DateTime.now();
+
+  LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
+    equals: isSameDay,
+    hashCode: getHashCode,
+  );
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
   }
 
   @override
@@ -59,7 +76,6 @@ class _MyAppState extends State<MyApp> {
     _generateEvents();
   }
 
-  // Generate example events for demonstration purposes
   void _generateEvents() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
@@ -80,174 +96,174 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // Retrieve events for a specific day
-  List<Event> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: _themeMode,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text("🗓️ Day Planner"),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.account_circle),
-              onPressed: () {
-                // Handle account button press
-              },
-            ),
-          ],
-        ),
-        drawer: Drawer(
-          child: Container(
-            color: darkTheme.appBarTheme.backgroundColor,
-            height: MediaQuery.of(context).size.height * 0.8,
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  child: Center(
-                    child: Text(
-                      "Day Planner 🗓️",
-                      style: TextStyle(fontSize: 32),
-                    ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('🗓️ Day Planner'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              // Handle account button press
+            },
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: Container(
+          color: Theme.of(context).appBarTheme?.backgroundColor,
+          height: MediaQuery.of(context).size.height * 0.8,
+          child: ListView(
+            children: [
+              DrawerHeader(
+                child: Center(
+                  child: Text(
+                    "Day Planner 🗓️",
+                    style: TextStyle(fontSize: 32),
                   ),
                 ),
-                ListTile(
-                  title: Text("Day View"),
-                  onTap: () {
-                    // Handle day view
+              ),
+              ListTile(
+                title: Text("Day View"),
+                onTap: () {
+                  // Handle day view
+                },
+              ),
+              ListTile(
+                title: Text("3-Day View"),
+                onTap: () {
+                  // Handle 3-day view
+                },
+              ),
+              ListTile(
+                title: Text("Week View"),
+                onTap: () {
+                  // Handle week view
+                },
+              ),
+              ListTile(
+                title: Text("Month View"),
+                onTap: () {
+                  // Handle month view
+                },
+              ),
+              Divider(),
+              ListTile(
+                title: Text("Holidays"),
+                leading: Checkbox(
+                  value: false, // Replace with the holiday checkbox value
+                  onChanged: (value) {
+                    // Handle holiday checkbox
                   },
                 ),
-                ListTile(
-                  title: Text("3-Day View"),
-                  onTap: () {
-                    // Handle 3-day view
+              ),
+              ListTile(
+                title: Text("Events"),
+                leading: Checkbox(
+                  value: false, // Replace with the events checkbox value
+                  onChanged: (value) {
+                    // Handle events checkbox
                   },
                 ),
-                ListTile(
-                  title: Text("Week View"),
-                  onTap: () {
-                    // Handle week view
+              ),
+              ListTile(
+                title: Text("Tasks"),
+                leading: Checkbox(
+                  value: false, // Replace with the tasks checkbox value
+                  onChanged: (value) {
+                    // Handle tasks checkbox
                   },
                 ),
-                ListTile(
-                  title: Text("Month View"),
-                  onTap: () {
-                    // Handle month view
-                  },
-                ),
-                Divider(),
-                ListTile(
-                  title: Text("Holidays"),
-                  leading: Checkbox(
-                    value: false, // Replace with the holiday checkbox value
-                    onChanged: (value) {
-                      // Handle holiday checkbox
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: Text("Events"),
-                  leading: Checkbox(
-                    value: false, // Replace with the events checkbox value
-                    onChanged: (value) {
-                      // Handle events checkbox
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: Text("Tasks"),
-                  leading: Checkbox(
-                    value: false, // Replace with the tasks checkbox value
-                    onChanged: (value) {
-                      // Handle tasks checkbox
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: Text("Toggle Theme"),
-                  leading: Icon(Icons.brightness_4),
-                  onTap: _toggleTheme, // Toggle theme function
-                ),
-              ],
-            ),
+              ),
+              ListTile(
+                title: Text("Toggle Theme"),
+                leading: Icon(Icons.brightness_4),
+                onTap: widget.toggleTheme, // Toggle theme using the callback
+              ),
+            ],
           ),
         ),
-        body: Container(
+      ),
+      body: Container(
+        child: Column(
           children: [
-            Column(
-              children: [
-                TableCalendar(
-                  firstDay: DateTime.utc(2010, 10, 16),
-                  lastDay: DateTime.utc(2030, 3, 14),
-                  focusedDay: _focusedDay,
-                  calendarFormat: _calendarFormat,
-                  selectedDayPredicate: (day) {
-                    return isSameDay(_selectedDay, day);
-                  },
-                  onDaySelected: (selectedDay, focusedDay) {
-                    setState(() {
-                      _selectedDay = selectedDay;
-                      _focusedDay = focusedDay ?? selectedDay;
-                    });
-                  },
-                  eventLoader: (day) {
-                    return _getEventsForDay(day);
-                  },
-                  rowHeight: 30,
-                  daysOfWeekStyle: DaysOfWeekStyle(
-                    weekdayStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.black,
-                    ),
-                    weekendStyle: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Colors.red,
-                    ),
-                  ),
+            TableCalendar(
+              firstDay: DateTime.utc(2010, 10, 16),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: _focusedDay,
+              calendarFormat: _calendarFormat,
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                  _focusedDay = focusedDay ?? selectedDay;
+                });
+              },
+              eventLoader: (day) {
+                return _getEventsForDay(day);
+              },
+              rowHeight: 30,
+              daysOfWeekStyle: DaysOfWeekStyle(
+                weekdayStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.black,
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _getEventsForDay(_selectedDay).length,
-                    itemBuilder: (context, index) {
-                      final event = _getEventsForDay(_selectedDay)[index];
-                      return ListTile(
-                        title: Text(event.title),
-                        subtitle: Text(DateFormat('hh:mm a').format(event.date)),
-                      );
-                    },
-                  ),
+                weekendStyle: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                  color: Colors.red,
                 ),
-              ],
+              ),
             ),
-            Positioned(
-              bottom: 16.0,
-              right: 16.0,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => TaskAddingPage()),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _getEventsForDay(_selectedDay).length,
+                itemBuilder: (context, index) {
+                  final event = _getEventsForDay(_selectedDay)[index];
+                  return ListTile(
+                    title: Text(event.title),
+                    subtitle: Text(DateFormat('hh:mm a').format(event.date)),
                   );
                 },
-                child: Icon(Icons.add),
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButton: Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => TaskAddingPage()),
+              );
+            },
+            child: Icon(Icons.add),
+          ),
         ),
       ),
     );
   }
 }
 
-// A function to generate a unique hash code for a DateTime
+class Event {
+  final String title;
+  final DateTime date;
+
+  Event(this.title, this.date);
+}
+
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
 }
+
+bool isSameDay(DateTime a, DateTime b) {
+  return a.year == b.year && a.month == b.month && a.day == b.day;
+}
+
