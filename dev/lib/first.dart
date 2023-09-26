@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
+import 'second_page.dart';
 import 'dart:collection';
 
 void main() {
   runApp(MyApp());
 }
 
+// Define a class to represent calendar events
 class Event {
   final String title;
   final DateTime date;
@@ -20,15 +22,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  // Calendar-related variables
   DateTime _selectedDay = DateTime.now();
   DateTime _focusedDay = DateTime.now();
   CalendarFormat _calendarFormat = CalendarFormat.month;
+
+  // Store events in a LinkedHashMap
   LinkedHashMap<DateTime, List<Event>> events = LinkedHashMap(
     equals: isSameDay,
     hashCode: getHashCode,
   );
 
-  // Define light and dark themes
+  // Themes for the app
   final ThemeData lightTheme = ThemeData.light().copyWith(
     // Configure the light theme here
   );
@@ -37,8 +42,10 @@ class _MyAppState extends State<MyApp> {
     // Configure the dark theme here
   );
 
+  // Manage the app's theme mode
   ThemeMode _themeMode = ThemeMode.light;
 
+  // Function to toggle between light and dark themes
   void _toggleTheme() {
     setState(() {
       _themeMode =
@@ -52,11 +59,10 @@ class _MyAppState extends State<MyApp> {
     _generateEvents();
   }
 
-  // Generate example events
+  // Generate example events for demonstration purposes
   void _generateEvents() {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
-    final oneDay = Duration(days: 1);
 
     events = LinkedHashMap(
       equals: isSameDay,
@@ -74,6 +80,7 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  // Retrieve events for a specific day
   List<Event> _getEventsForDay(DateTime day) {
     return events[day] ?? [];
   }
@@ -87,10 +94,10 @@ class _MyAppState extends State<MyApp> {
       themeMode: _themeMode,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("🗓️ Day Planner"), // Replace with your app's title
+          title: Text("🗓️ Day Planner"),
           actions: [
             IconButton(
-              icon: Icon(Icons.account_circle), // Account icon
+              icon: Icon(Icons.account_circle),
               onPressed: () {
                 // Handle account button press
               },
@@ -166,13 +173,13 @@ class _MyAppState extends State<MyApp> {
                 ListTile(
                   title: Text("Toggle Theme"),
                   leading: Icon(Icons.brightness_4),
-                  onTap: _toggleTheme,
+                  onTap: _toggleTheme, // Toggle theme function
                 ),
               ],
             ),
           ),
         ),
-        body: Stack(
+        body: Container(
           children: [
             Column(
               children: [
@@ -231,7 +238,6 @@ class _MyAppState extends State<MyApp> {
                   );
                 },
                 child: Icon(Icons.add),
-
               ),
             ),
           ],
@@ -241,155 +247,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class TaskAddingPage extends StatefulWidget {
-  @override
-  _TaskAddingPageState createState() => _TaskAddingPageState();
-}
-
-class _TaskAddingPageState extends State<TaskAddingPage> {
-  String title = '';
-  DateTime? selectedDate;
-  TimeOfDay? selectedStartTime;
-  TimeOfDay? selectedEndTime;
-  String location = '';
-  String text = '';
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
-    }
-  }
-
-  Future<void> _selectStartTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedStartTime ?? TimeOfDay.now(),
-    );
-    if (picked != null && picked != selectedStartTime) {
-      setState(() {
-        selectedStartTime = picked;
-      });
-    }
-  }
-
-  Future<void> _selectEndTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
-      context: context,
-      initialTime: selectedEndTime ?? TimeOfDay.now(),
-    );
-    if (picked != null && picked != selectedEndTime) {
-      setState(() {
-        selectedEndTime = picked;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Task'),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  title = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Title',
-              ),
-            ),
-            Row(
-              children: [
-                Text('Date: ${selectedDate?.toLocal()}'.split(' ')[0]),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectDate(context),
-                  child: Text('Select Date'),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text('Start Time: ${selectedStartTime?.format(context) ?? ''}'),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectStartTime(context),
-                  child: Text('Select'),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Text('End Time: ${selectedEndTime?.format(context) ?? ''}'),
-                SizedBox(width: 20),
-                ElevatedButton(
-                  onPressed: () => _selectEndTime(context),
-                  child: Text('Select'),
-                ),
-              ],
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  location = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Location',
-              ),
-            ),
-            TextField(
-              onChanged: (value) {
-                setState(() {
-                  text = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Text',
-              ),
-            ),
-            SizedBox(height: 16.0),
-            ElevatedButton(
-              onPressed: () {
-                // Add the task to your task list or database
-                // You can use the title, selectedDate, selectedStartTime, selectedEndTime, location, and text variables
-                // to access the entered values and save them.
-                // For example, you can call a function like addTask(title, selectedDate, selectedStartTime, selectedEndTime, location, text)
-              },
-              child: Text('Add Task'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-void addTask(
-    String title,
-    DateTime? selectedDate,
-    TimeOfDay? selectedStartTime,
-    TimeOfDay? selectedEndTime,
-    String location,
-    String text,
-    ) {
-  // Implement your task addition logic here
-}
 // A function to generate a unique hash code for a DateTime
 int getHashCode(DateTime key) {
   return key.day * 1000000 + key.month * 10000 + key.year;
