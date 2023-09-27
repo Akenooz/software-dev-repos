@@ -21,6 +21,7 @@ dependencies:
   google_sign_in: ^5.2.1  # Latest version as of now
   googleapis: ^11.4.0  # Use a version that supports null safety
   googleapis_auth: ^1.4.1  # Use the latest compatible version
+  firebase_core: ^2.16.0
 
 dev_dependencies:
   flutter_test:

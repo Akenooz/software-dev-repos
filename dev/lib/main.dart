@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:intl/intl.dart';
 import 'calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
+// ignore: depend_on_referenced_packages
+import '''
+package:firebase_core/firebase_core.dart''' show Firebase;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

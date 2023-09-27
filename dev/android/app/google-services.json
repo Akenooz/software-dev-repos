@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "243175902230",
+    "project_id": "fir-dpintegration",
+    "storage_bucket": "fir-dpintegration.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:243175902230:android:7dbf303027515ebdd63937",
+        "android_client_info": {
+          "package_name": "com.example.dev"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-k6wsuhXjA1IZ54VdW8y707f2vGwN6tM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
