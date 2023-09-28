@@ -16,17 +16,15 @@ class WeekView extends StatelessWidget {
           },
         ),
       ),
-      body: Center(
-        child: SfCalendar(
-          view: CalendarView.week,
-          dataSource: MeetingDataSource(_getDataSource()),
-          // Customize the calendar settings as needed
-        ),
+      body: SfCalendar(
+        view: CalendarView.week,
+        dataSource: MeetingDataSource(_getDataSource()),
+        // Customize the calendar settings as needed
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your logic for when the button is pressed
-          // For example, navigate to a screen to add a new event for the week view.
+          // For example, navigate to a screen to add a new event.
         },
         child: Icon(Icons.add),
       ),

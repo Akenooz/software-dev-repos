@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 class DayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,12 +19,10 @@ class DayView extends StatelessWidget {
           },
         ),
       ),
-      body: Center(
-        child: SfCalendar(
-          view: CalendarView.day,
-          dataSource: MeetingDataSource(_getDataSource()),
-          // Customize the calendar settings as needed
-        ),
+      body: SfCalendar(
+        view: CalendarView.day,
+        dataSource: MeetingDataSource(_getDataSource()),
+        // Customize the calendar settings as needed
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -32,6 +33,7 @@ class DayView extends StatelessWidget {
       ),
     );
   }
+
 
   List<Meeting> _getDataSource() {
     final List<Meeting> meetings = <Meeting>[];

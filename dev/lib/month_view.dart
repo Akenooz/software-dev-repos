@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
+import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
+
 class MonthView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,17 +19,15 @@ class MonthView extends StatelessWidget {
           },
         ),
       ),
-      body: Center(
-        child: SfCalendar(
-          view: CalendarView.month,
-          dataSource: MeetingDataSource(_getDataSource()),
-          // Customize the calendar settings as needed
-        ),
+      body: SfCalendar(
+        view: CalendarView.month,
+        dataSource: MeetingDataSource(_getDataSource()),
+        // Customize the calendar settings as needed
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your logic for when the button is pressed
-          // For example, navigate to a screen to add a new event for the month view.
+          // For example, navigate to a screen to add a new event.
         },
         child: Icon(Icons.add),
       ),
