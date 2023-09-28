@@ -2,9 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
-import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'second_page.dart';
 
 class MonthView extends StatelessWidget {
   @override
@@ -26,8 +24,9 @@ class MonthView extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your logic for when the button is pressed
-          // For example, navigate to a screen to add a new event.
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => TaskReminderApp()),
+          );
         },
         child: Icon(Icons.add),
       ),

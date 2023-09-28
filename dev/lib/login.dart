@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
               Text(
                 'Welcome back, you\'ve been missed!',
                 style: TextStyle(
-                  color: Colors.grey[700],
+                  color: Colors.grey[800],
                   fontSize: 16,
                 ),
               ),
@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Text(
                       'Forgot Password?',
-                      style: TextStyle(color: Colors.grey[600]),
+                      style: TextStyle(color: Colors.grey[700]),
                     ),
                   ],
                 ),

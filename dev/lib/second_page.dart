@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'first.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TaskReminderApp(),
-    ),
-  );
+  runApp(TaskReminderApp());
 }
 
 class TaskReminderApp extends StatelessWidget {
@@ -18,12 +14,8 @@ class TaskReminderApp extends StatelessWidget {
       title: 'Task Reminder',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => TaskReminderScreen(),
-      },
+      home: TaskReminderScreen(),
     );
   }
 }
@@ -69,6 +61,7 @@ class TaskReminderScreen extends StatefulWidget {
 }
 
 class _TaskReminderScreenState extends State<TaskReminderScreen> {
+
   List<Task> tasks = [];
   int taskId = 1;
 
@@ -205,17 +198,20 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => MyApp()),
+            );
           },
         ),
       ),
       body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(10),
+              padding: EdgeInsets.all(9),
               decoration: BoxDecoration(
-                color: Colors.orange,
+                color: Colors.grey[600],
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -228,20 +224,14 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
               ),
             ),
             SizedBox(height: 25),
-            // Enter Task TextField
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                controller: taskController,
-                onChanged: (value) {},
-                decoration: InputDecoration(
-                  hintText: 'Enter task',
-                ),
+            TextField(
+              controller: taskController,
+              onChanged: (value) {},
+              decoration: InputDecoration(
+                hintText: 'Enter task',
               ),
             ),
             SizedBox(height: 10),
-            // Select Start Date and Select Start Time Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -261,7 +251,6 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                     : "Select Start Time"),
               ],
             ),
-            // Select Deadline Date and Select Deadline Time Row
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -272,7 +261,7 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                 Text(selectedDeadlineDate != null
                     ? DateFormat('yyyy-MM-dd')
                     .format(selectedDeadlineDate!)
-                    : "Select end Date"),
+                    : "Select End Date"),
                 IconButton(
                   onPressed: () => _selectDeadlineTime(context),
                   icon: Icon(Icons.access_time),
@@ -280,19 +269,15 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                 Text(selectedDeadlineTime != null
                     ? DateFormat('hh:mm a')
                     .format(selectedDeadlineTime!)
-                    : "Select end Time"),
+                    : "Select End Time"),
               ],
             ),
             SizedBox(height: 10),
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: TextField(
-                controller: taskController,
-                onChanged: (value) {},
-                decoration: InputDecoration(
-                  hintText: 'Enter description (optional)',
-                ),
+            TextField(
+              controller: descriptionController,
+              onChanged: (value) {},
+              decoration: InputDecoration(
+                hintText: 'Enter description (optional)',
               ),
             ),
             SizedBox(height: 20),
@@ -418,7 +403,10 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
             SizedBox(height: 20),
             Column(
               children: tasks.map((task) {
-                return TaskListItem(task: task);
+                return TaskListItem(
+                  task: task,
+                  onDelete: () => removeTask(task.id),
+                );
               }).toList(),
             ),
           ],
@@ -430,8 +418,9 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
 
 class TaskListItem extends StatefulWidget {
   final Task task;
+  final VoidCallback onDelete;
 
-  const TaskListItem({required this.task});
+  TaskListItem({required this.task, required this.onDelete});
 
   @override
   _TaskListItemState createState() => _TaskListItemState();
@@ -509,15 +498,26 @@ class _TaskListItemState extends State<TaskListItem> {
             Text('Description: ${widget.task.description}'),
         ],
       ),
-      trailing: Checkbox(
-        value: isChecked,
-        onChanged: (newValue) {
-          setState(() {
-            isChecked = newValue!;
-          });
-        },
-        activeColor: Colors.green,
-        checkColor: Colors.white,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Checkbox(
+            value: isChecked,
+            onChanged: (newValue) {
+              setState(() {
+                isChecked = newValue!;
+              });
+            },
+            activeColor: Colors.green,
+            checkColor: Colors.white,
+          ),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              widget.onDelete();
+            },
+          ),
+        ],
       ),
     );
   }
