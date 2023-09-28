@@ -131,12 +131,6 @@ class _FirstPageState extends State<FirstPage> {
                 },
               ),
               ListTile(
-                title: Text("3-Day View"),
-                onTap: () {
-                  // Handle 3-day view
-                },
-              ),
-              ListTile(
                 title: Text("Week View"),
                 onTap: () {
                   // Handle week view
