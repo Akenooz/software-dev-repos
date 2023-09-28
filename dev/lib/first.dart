@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
+//import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 import 'dart:collection';
+import 'day_view.dart';
+import 'week_view.dart';
+import 'month_view.dart';
 
 import 'second_page.dart'; // Import TaskReminderApp
 
@@ -127,19 +131,28 @@ class _FirstPageState extends State<FirstPage> {
               ListTile(
                 title: Text("Day View"),
                 onTap: () {
-                  // Handle day view
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => DayView()),
+                  );
                 },
               ),
               ListTile(
                 title: Text("Week View"),
                 onTap: () {
-                  // Handle week view
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => WeekView()),
+                  );
                 },
               ),
               ListTile(
                 title: Text("Month View"),
                 onTap: () {
-                  // Handle month view
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MonthView()),
+                  );
                 },
               ),
               Divider(),
