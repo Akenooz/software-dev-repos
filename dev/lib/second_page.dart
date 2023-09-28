@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
-import 'first.dart'; // Import TaskReminderApp
 
 void main() {
   runApp(
     MaterialApp(
-      debugShowCheckedModeBanner: false, // Add this line
+      debugShowCheckedModeBanner: false,
       home: TaskReminderApp(),
     ),
   );
@@ -16,7 +15,7 @@ class TaskReminderApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Add Task',
+      title: 'Task Reminder',
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -24,8 +23,6 @@ class TaskReminderApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => TaskReminderScreen(),
-        '/calendar': (context) => CalendarViewScreen(),
-        '/addTask': (context) => TaskAddingPage(),
       },
     );
   }
@@ -208,19 +205,9 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MyApp()),
-            );
+            Navigator.of(context).pop();
           },
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              Navigator.pushNamed(context, '/addTask');
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -283,116 +270,119 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                   icon: Icon(Icons.calendar_today),
                 ),
                 Text(selectedDeadlineDate != null
-                    ? DateFormat('yyyy-MM-dd').format(selectedDeadlineDate!)
-                    : "Select Deadline Date"),
+                    ? DateFormat('yyyy-MM-dd')
+                    .format(selectedDeadlineDate!)
+                    : "Select end Date"),
                 IconButton(
                   onPressed: () => _selectDeadlineTime(context),
                   icon: Icon(Icons.access_time),
                 ),
                 Text(selectedDeadlineTime != null
-                    ? DateFormat('hh:mm a').format(selectedDeadlineTime!)
-                    : "Select Deadline Time"),
+                    ? DateFormat('hh:mm a')
+                    .format(selectedDeadlineTime!)
+                    : "Select end Time"),
               ],
             ),
             SizedBox(height: 10),
-            TextField(
-              controller: descriptionController,
-              onChanged: (value) {},
-              decoration: InputDecoration(
-                hintText: 'Enter description (optional)',
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: taskController,
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  hintText: 'Enter description (optional)',
+                ),
               ),
             ),
             SizedBox(height: 20),
             Row(
               children: [
-                Checkbox(
-                  value: isRepeating,
-                  onChanged: (value) {
-                    setState(() {
-                      isRepeating = value!;
-                    });
-                  },
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isRepeating,
+                      onChanged: (value) {
+                        setState(() {
+                          isRepeating = value!;
+                        });
+                      },
+                    ),
+                    Text('Repeating Task    '),
+                  ],
                 ),
-                Text('Repeating Task'),
+                Row(
+                  children: [
+                    Checkbox(
+                      value: hasReminder,
+                      onChanged: (value) {
+                        setState(() {
+                          hasReminder = value!;
+                        });
+                      },
+                    ),
+                    Text('Set Reminder'),
+                  ],
+                ),
               ],
             ),
             if (isRepeating)
-              Column(
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Text('Repeat Type: '),
-                      DropdownButton<RecurrenceType>(
-                        value: selectedRecurrenceType,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRecurrenceType = value;
-                          });
-                        },
-                        items: RecurrenceType.values
-                            .map((type) => DropdownMenuItem(
-                          value: type,
-                          child: Text(type.toString().split('.').last),
-                        ))
-                            .toList(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Repeat Frequency: '),
-                      DropdownButton<int>(
-                        value: selectedRecurrenceFrequency,
-                        onChanged: (value) {
-                          setState(() {
-                            selectedRecurrenceFrequency = value;
-                          });
-                        },
-                        items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-                            .map((frequency) => DropdownMenuItem(
-                          value: frequency,
-                          child: Text(frequency.toString()),
-                        ))
-                            .toList(),
-                      ),
-                    ],
+                  Text('Repeat Type: '),
+                  DropdownButton<RecurrenceType>(
+                    value: selectedRecurrenceType,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedRecurrenceType = value;
+                      });
+                    },
+                    items: RecurrenceType.values
+                        .map((type) => DropdownMenuItem(
+                      value: type,
+                      child: Text(type.toString().split('.').last),
+                    ))
+                        .toList(),
                   ),
                 ],
               ),
-            Row(
-              children: [
-                Checkbox(
-                  value: hasReminder,
-                  onChanged: (value) {
-                    setState(() {
-                      hasReminder = value!;
-                    });
-                  },
-                ),
-                Text('Set Reminder'),
-              ],
-            ),
-            if (hasReminder)
-              Column(
+            if (isRepeating)
+              Row(
                 children: [
-                  Row(
-                    children: [
-                      Text('Reminder Minutes Before: '),
-                      DropdownButton<int>(
-                        value: reminderMinutes,
-                        onChanged: (value) {
-                          setState(() {
-                            reminderMinutes = value;
-                          });
-                        },
-                        items: [5, 10, 15, 30, 60]
-                            .map((minutes) => DropdownMenuItem(
-                          value: minutes,
-                          child: Text('$minutes minutes'),
-                        ))
-                            .toList(),
-                      ),
-                    ],
+                  Text('Repeat Frequency: '),
+                  DropdownButton<int>(
+                    value: selectedRecurrenceFrequency,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedRecurrenceFrequency = value;
+                      });
+                    },
+                    items: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+                        .map((frequency) => DropdownMenuItem(
+                      value: frequency,
+                      child: Text(frequency.toString()),
+                    ))
+                        .toList(),
+                  ),
+                ],
+              ),
+            if (hasReminder)
+              Row(
+                children: [
+                  Text('Reminder Minutes Before: '),
+                  DropdownButton<int>(
+                    value: reminderMinutes,
+                    onChanged: (value) {
+                      setState(() {
+                        reminderMinutes = value;
+                      });
+                    },
+                    items: [5, 10, 15, 30, 60]
+                        .map((minutes) => DropdownMenuItem(
+                      value: minutes,
+                      child: Text('$minutes minutes'),
+                    ))
+                        .toList(),
                   ),
                 ],
               ),
@@ -431,32 +421,6 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                 return TaskListItem(task: task);
               }).toList(),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class TaskAddingPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Add Task'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Your task adding UI goes here
           ],
         ),
       ),
@@ -530,12 +494,16 @@ class _TaskListItemState extends State<TaskListItem> {
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Start Date: ${DateFormat('yyyy-MM-dd').format(widget.task.startTime!)}'),
-          Text('Start Time: ${DateFormat('hh:mm a').format(widget.task.startTime!)}'),
+          Text(
+              'Start Date: ${DateFormat('yyyy-MM-dd').format(widget.task.startTime!)}'),
+          Text(
+              'Start Time: ${DateFormat('hh:mm a').format(widget.task.startTime!)}'),
           if (widget.task.deadline != null)
-            Text('Deadline Date: ${DateFormat('yyyy-MM-dd').format(widget.task.deadline!)}'),
+            Text(
+                'Deadline Date: ${DateFormat('yyyy-MM-dd').format(widget.task.deadline!)}'),
           if (widget.task.deadline != null)
-            Text('Deadline Time: ${DateFormat('hh:mm a').format(widget.task.deadline!)}'),
+            Text(
+                'Deadline Time: ${DateFormat('hh:mm a').format(widget.task.deadline!)}'),
           if (widget.task.description != null &&
               widget.task.description!.isNotEmpty)
             Text('Description: ${widget.task.description}'),
@@ -550,26 +518,6 @@ class _TaskListItemState extends State<TaskListItem> {
         },
         activeColor: Colors.green,
         checkColor: Colors.white,
-      ),
-    );
-  }
-}
-
-class CalendarViewScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Calendar View'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-      ),
-      body: Center(
-        child: Text('This is the Calendar View screen.'),
       ),
     );
   }
