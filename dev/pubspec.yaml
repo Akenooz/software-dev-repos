@@ -16,6 +16,8 @@ dependencies:
 
   intl: ^0.17.0  # Keep the existing constraint
 
+  syncfusion_flutter_calendar: ^20.2.40
+
   table_calendar: ^3.0.8  # Downgrade the table_calendar version
 
   google_sign_in: ^5.2.1  # Latest version as of now

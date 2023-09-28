@@ -3,7 +3,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'dart:collection';
 
-import 'second_page.dart'; // Import TaskAddingPage
+import 'second_page.dart'; // Import TaskReminderApp
 
 
 void main() {
@@ -241,7 +241,7 @@ class _FirstPageState extends State<FirstPage> {
           child: FloatingActionButton(
             onPressed: () {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => TaskAddingPage()),
+                MaterialPageRoute(builder: (context) => TaskReminderApp()),
               );
             },
             child: Icon(Icons.add),
