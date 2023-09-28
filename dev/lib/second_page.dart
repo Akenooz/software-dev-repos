@@ -4,7 +4,12 @@ import 'package:intl/intl.dart';
 import 'first.dart'; // Import TaskReminderApp
 
 void main() {
-  runApp(TaskReminderApp());
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false, // Add this line
+      home: TaskReminderApp(),
+    ),
+  );
 }
 
 class TaskReminderApp extends StatelessWidget {
@@ -205,7 +210,8 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MyApp()),
-            );          },
+            );
+          },
         ),
         actions: [
           IconButton(
@@ -235,17 +241,23 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
               ),
             ),
             SizedBox(height: 25),
-            Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: taskController,
-                    onChanged: (value) {},
-                    decoration: InputDecoration(
-                      hintText: 'Enter task',
-                    ),
-                  ),
+            // Enter Task TextField
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 16),
+              child: TextField(
+                controller: taskController,
+                onChanged: (value) {},
+                decoration: InputDecoration(
+                  hintText: 'Enter task',
                 ),
+              ),
+            ),
+            SizedBox(height: 10),
+            // Select Start Date and Select Start Time Row
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
                 IconButton(
                   onPressed: () => _selectStartDate(context),
                   icon: Icon(Icons.calendar_today),
@@ -262,7 +274,9 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
                     : "Select Start Time"),
               ],
             ),
+            // Select Deadline Date and Select Deadline Time Row
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
                   onPressed: () => _selectDeadlineDate(context),
