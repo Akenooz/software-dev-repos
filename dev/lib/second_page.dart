@@ -60,11 +60,8 @@ class TaskReminderScreen extends StatefulWidget {
   @override
   _TaskReminderScreenState createState() => _TaskReminderScreenState();
 }
-//
-class _TaskReminderScreenState extends State<TaskReminderScreen> {
-  // Initialize the NotificationManager
-  final NotificationManager notificationManager = NotificationManager();
 
+class _TaskReminderScreenState extends State<TaskReminderScreen> {
   List<Task> tasks = [];
   int taskId = 1;
 
@@ -81,6 +78,8 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
   int? reminderMinutes;
   double priorityLevel = 1.0;
 
+  NotificationManager notificationManager = NotificationManager(); // Add this line
+
   @override
   void initState() {
     super.initState();
@@ -89,10 +88,15 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
         setState(() {});
       }
     });
+    notificationManager.init(); // Initialize the notification manager
   }
 
-  void addTask(String taskName, DateTime? deadline, String? description,
-      DateTime? startTime) {
+  void addTask(
+      String taskName,
+      DateTime? deadline,
+      String? description,
+      DateTime? startTime,
+      ) {
     setState(() {
       tasks.add(Task(
         taskId,
@@ -126,15 +130,13 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
       // Schedule a notification for this task
       if (startTime != null) {
         notificationManager.scheduleNotification(
-          'Task Reminder',
-          'Your task "$taskName" is starting now!',
-          startTime,
+          title: 'Task Reminder',
+          body: 'Your task "$taskName" is starting now!',
+          scheduledTime: startTime,
         );
       }
     });
   }
-
-
 
   void removeTask(int id) {
     setState(() {
@@ -149,10 +151,9 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     ))!;
-    if (picked != null)
-      setState(() {
-        selectedStartDate = picked;
-      });
+    setState(() {
+      selectedStartDate = picked;
+    });
   }
 
   Future<void> _selectStartTime(BuildContext context) async {
@@ -179,10 +180,9 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
       firstDate: DateTime.now(),
       lastDate: DateTime(2101),
     ))!;
-    if (picked != null)
-      setState(() {
-        selectedDeadlineDate = picked;
-      });
+    setState(() {
+      selectedDeadlineDate = picked;
+    });
   }
 
   Future<void> _selectDeadlineTime(BuildContext context) async {
