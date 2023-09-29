@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
 import 'first.dart';
+import 'notification_service.dart'; // Import your NotificationManager class
 
 void main() {
   runApp(TaskReminderApp());
@@ -59,8 +60,10 @@ class TaskReminderScreen extends StatefulWidget {
   @override
   _TaskReminderScreenState createState() => _TaskReminderScreenState();
 }
-
+//
 class _TaskReminderScreenState extends State<TaskReminderScreen> {
+  // Initialize the NotificationManager
+  final NotificationManager notificationManager = NotificationManager();
 
   List<Task> tasks = [];
   int taskId = 1;
@@ -119,8 +122,19 @@ class _TaskReminderScreenState extends State<TaskReminderScreen> {
       hasReminder = false;
       reminderMinutes = null;
       priorityLevel = 1.0;
+
+      // Schedule a notification for this task
+      if (startTime != null) {
+        notificationManager.scheduleNotification(
+          'Task Reminder',
+          'Your task "$taskName" is starting now!',
+          startTime,
+        );
+      }
     });
   }
+
+
 
   void removeTask(int id) {
     setState(() {

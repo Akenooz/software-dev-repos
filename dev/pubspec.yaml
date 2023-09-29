@@ -1,34 +1,27 @@
 name: dev
 description: A new Flutter project.
-
 publish_to: 'none'
-
 version: 1.0.0+1
-
 environment:
   sdk: '>=3.1.2 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-
   cupertino_icons: ^1.0.2
-
-  intl: ^0.17.0  # Keep the existing constraint
-
+  intl: ^0.17.0
   syncfusion_flutter_calendar: ^20.2.40
-
-  table_calendar: ^3.0.8  # Downgrade the table_calendar version
-
-  google_sign_in: ^5.2.1  # Latest version as of now
-  googleapis: ^11.4.0  # Use a version that supports null safety
-  googleapis_auth: ^1.4.1  # Use the latest compatible version
+  flutter_timezone: ^1.0.7
+  table_calendar: ^3.0.8
+  google_sign_in: ^5.2.1
+  googleapis: ^11.4.0
+  googleapis_auth: ^1.4.1
   firebase_core: ^2.16.0
+  flutter_local_notifications: ^15.1.1  # Add this line
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
 
 flutter:
