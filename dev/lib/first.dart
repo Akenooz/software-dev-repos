@@ -1,13 +1,13 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:intl/intl.dart';
 import 'dart:collection';
+
 import 'day_view.dart';
 import 'week_view.dart';
 import 'month_view.dart';
-
 import 'second_page.dart'; // Import TaskReminderApp
-
 
 void main() {
   runApp(MyApp());
@@ -69,10 +69,6 @@ class _FirstPageState extends State<FirstPage> {
     hashCode: getHashCode,
   );
 
-  List<Event> _getEventsForDay(DateTime day) {
-    return events[day] ?? [];
-  }
-
   @override
   void initState() {
     super.initState();
@@ -113,84 +109,7 @@ class _FirstPageState extends State<FirstPage> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          color: Theme.of(context).appBarTheme?.backgroundColor,
-          height: MediaQuery.of(context).size.height * 0.8,
-          child: ListView(
-            children: [
-              DrawerHeader(
-                child: Center(
-                  child: Text(
-                    "Day Planner 🗓️",
-                    style: TextStyle(fontSize: 32),
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Day View"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => DayView()),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Week View"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => WeekView()),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Month View"),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => MonthView()),
-                  );
-                },
-              ),
-              Divider(),
-              ListTile(
-                title: Text("Holidays"),
-                leading: Checkbox(
-                  value: false, // Replace with the holiday checkbox value
-                  onChanged: (value) {
-                    // Handle holiday checkbox
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text("Events"),
-                leading: Checkbox(
-                  value: false, // Replace with the events checkbox value
-                  onChanged: (value) {
-                    // Handle events checkbox
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text("Tasks"),
-                leading: Checkbox(
-                  value: false, // Replace with the tasks checkbox value
-                  onChanged: (value) {
-                    // Handle tasks checkbox
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text("Toggle Theme"),
-                leading: Icon(Icons.brightness_4),
-                onTap: widget.toggleTheme, // Toggle theme using the callback
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: AppDrawer(toggleTheme: widget.toggleTheme),
       body: Container(
         child: Column(
           children: [
@@ -240,19 +159,98 @@ class _FirstPageState extends State<FirstPage> {
           ],
         ),
       ),
-      floatingActionButton: Align(
-        alignment: Alignment.bottomRight,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: FloatingActionButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => TaskReminderApp()),
-              );
-            },
-            child: Icon(Icons.add),
-          ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => TaskReminderApp()),
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  List<Event> _getEventsForDay(DateTime day) {
+    return events[day] ?? [];
+  }
+}
+
+class AppDrawer extends StatelessWidget {
+  final VoidCallback toggleTheme;
+
+  const AppDrawer({required this.toggleTheme});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Container(
+        color: Theme.of(context).appBarTheme?.backgroundColor,
+        height: MediaQuery.of(context).size.height * 0.8,
+        child: ListView(
+          children: [
+            DrawerHeader(
+              child: Center(
+                child: Text(
+                  "Day Planner 🗓️",
+                  style: TextStyle(fontSize: 32),
+                ),
+              ),
+            ),
+            DrawerItem(title: "Day View", onTap: () => _navigateTo(context, DayView())),
+            DrawerItem(title: "Week View", onTap: () => _navigateTo(context, WeekView())),
+            DrawerItem(title: "Month View", onTap: () => _navigateTo(context, MonthView())),
+            Divider(),
+            CheckboxItem(title: "Holidays"),
+            CheckboxItem(title: "Events"),
+            CheckboxItem(title: "Tasks"),
+            ListTile(
+              title: Text("Toggle Theme"),
+              leading: Icon(Icons.brightness_4),
+              onTap: toggleTheme,
+            ),
+          ],
         ),
+      ),
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => page),
+    );
+  }
+}
+
+class DrawerItem extends StatelessWidget {
+  final String title;
+  final VoidCallback onTap;
+
+  const DrawerItem({required this.title, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      onTap: onTap,
+    );
+  }
+}
+
+class CheckboxItem extends StatelessWidget {
+  final String title;
+
+  const CheckboxItem({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(title),
+      leading: Checkbox(
+        value: false, // Replace with the checkbox value
+        onChanged: (value) {
+          // Handle checkbox change
+        },
       ),
     );
   }
@@ -272,4 +270,3 @@ int getHashCode(DateTime key) {
 bool isSameDay(DateTime a, DateTime b) {
   return a.year == b.year && a.month == b.month && a.day == b.day;
 }
-
